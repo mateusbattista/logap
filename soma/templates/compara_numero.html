@@ -1,0 +1,9 @@
+{% if cont == 0 %}
+    <p>Nenhuma combinação asjlndasn</p>
+{% else %}
+    {{ lista_soma }}
+    
+{% endif %}
+<form action="{% url 'lista_numeros' %}">
+    <input type="submit" value="Voltar" />
+</form>
