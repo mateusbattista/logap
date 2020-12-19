@@ -1,5 +1,26 @@
 {% extends 'index.html' %}
 
 {% block graph %}
-{{ grafico.pk }}
+<canvas id="myChart"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+var ctx = document.getElementById('myChart').getContext('2d');
+var scatterChart = new Chart(ctx, {
+    type: 'scatter',
+    data: {
+        datasets: [{
+            label: 'Curva de Potência x Velocidade do Vento',
+            data: {{ dict_coo|safe }}
+        }]
+    },
+    options: {
+        scales: {
+            xAxes: [{
+                type: 'linear',
+                position: 'bottom'
+            }]
+        }
+    }
+});
+</script>
 {% endblock graph %}

@@ -21,6 +21,20 @@ def upload_csv(request):
 			lista[pos] = float(lista[pos])
 		return lista
 
+	def replace_comma_to_dot(lista):
+		lista_2 = []
+		for i in range(len(lista)):
+			word = ''
+			new_list = list(lista[i])
+			for j in range(len(new_list)):
+				if new_list[j] == ',':
+					new_list[j] = '.'
+			for w in range(len(new_list)):
+				word += str(new_list[w])
+			lista_2.append(word)
+			lista[i] = lista_2 [i]
+		return lista
+
 
 	if request.method == 'POST':
 		try:
@@ -42,6 +56,8 @@ def upload_csv(request):
 				fields = line.split(";")
 				coord_x.append(fields[0])
 				coord_y.append(fields[1])
+			print(len(coord_x))
+			print(len(coord_y))
 			coord_x.pop(0)
 			coord_y.pop(0)
 			try:
@@ -49,11 +65,12 @@ def upload_csv(request):
 				if form.is_valid():
 					form.save()
 					g = Grafico.objects.get(nome=request.POST.get('nome'))
+					replace_comma_to_dot(coord_x)
+					replace_comma_to_dot(coord_y)
 					coord_nova_x = convert_list_string_to_int(coord_x)
 					coord_nova_y = convert_list_string_to_int(coord_y)
 					g.coo_x = coord_nova_x
 					g.coo_y = coord_nova_y
-					print(coord_nova_x)
 					g.save()					
 				else:
 					logging.getLogger("error_logger").error(form.errors.as_json())												
@@ -70,32 +87,19 @@ def upload_csv(request):
 
 def build_graph(request):
 	graphform = SelectGraficoForm()
-	print("pelomenos eu")
+	form = GraficoForm()
+	dict_coo = []
 	if request.method == "GET":
-		print("aqui vem")
 		pk = request.GET.get('grafico')
 		grafico = Grafico.objects.get(pk=pk)
-		print(grafico)
-		"""
-		scatterchart page
-		"""
-		nb_element = 50
-		xdata = [i + random.randint(1, 10) for i in range(nb_element)]
-		print(xdata)
-		ydata1 = [i * random.randint(1, 10) for i in range(nb_element)]
-
-		kwargs1 = {'shape': 'circle'}
-
-		extra_serie1 = {"tooltip": {"y_start": "", "y_end": " balls"}}
-
-		chartdata = {
-			'x': xdata,
-			'name1': 'series 1', 'y1': ydata1, 'kwargs1': kwargs1, 'extra1': extra_serie1,
-		}
-		charttype = "scatterChart"
-		data = {
-			'charttype': charttype,
-			'chartdata': chartdata,
-		}
-		#return render_to_response('scatterchart.html', data)
-		return render(request, "construir_grafico.html",  {'grafico': grafico, 'graphform':graphform})
+		coord_x = list(grafico.coo_x.split(", "))
+		coord_x[-1] = coord_x[-1].replace(']','')
+		coord_y = list(grafico.coo_y.split(", "))
+		coord_y[-1] = coord_y[-1].replace(']','')
+		if len(coord_x) == len(coord_y):
+			for i in range(len(coord_x)):
+				dict_coo.append(
+					{"x":coord_x[i],"y": coord_y[i]}
+				)
+		print(dict_coo)	
+		return render(request, "construir_grafico.html",  {'form': form,'grafico': grafico, 'graphform':graphform, 'dict_coo':dict_coo})
