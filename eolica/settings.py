@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'grafico.apps.GraficoConfig',
     'soma.apps.SomaConfig',
+    'django-heroku'
 ]
 
 
