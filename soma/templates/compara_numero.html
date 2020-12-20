@@ -1,9 +1,13 @@
+{% extends 'index.html' %}
+{% block content %}
 {% if cont == 0 %}
-    <p>Nenhuma combinação asjlndasn</p>
+    <p>Nenhuma combinação encontrada para o </p>
 {% else %}
-    {{ lista_soma }}
-    
+    {% for numero in lista_soma %}
+        {{numero}}
+    {% endfor %}
 {% endif %}
 <form action="{% url 'lista_numeros' %}">
     <input type="submit" value="Voltar" />
 </form>
+{% endblock %}

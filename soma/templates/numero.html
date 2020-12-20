@@ -1,8 +1,38 @@
-{% for numero in numeros %}
-    {{numero.numero}}
-{% endfor %}
-
+{% extends 'index.html' %}
+{% block content%}
+<form method="POST" action='{% url 'add_numero' %}'>{% csrf_token %}
+    {{ nform }}
+    <button type="submit" class="save btn btn-default">Adicionar</button>
+</form>
+<br/><br/>
+<div class="col-md-6">
+    <div class="card card-success">
+        <div class="card-header">
+        <h3 class="card-title">Lista de Números adicionados</h3>
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+            </button>
+        </div>
+        <!-- /.card-tools -->
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+        {% for numero in numeros %}
+            {{numero.numero}}
+        {% endfor %}
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+    <form action="{% url 'apaga_lista' %}">
+        <input type="submit" value="Limpar Lista" />
+    </form>
+    </div>
+<br/>
+<br/>
 <form method = "GET" action='{% url 'compara_numero' %}'> 
     {{ number_2_form }} 
-    <input type = "submit" value = "Submit"> 
+    <input type = "submit" value = "Comparar"> 
 </form>
+
+{% endblock %}

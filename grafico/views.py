@@ -10,6 +10,9 @@ import random
 
 # Create your views here.
 
+def index(request):
+	return render(request, 'index.html',{})
+
 def upload_csv(request):
 	form = GraficoForm()
 	graphform = SelectGraficoForm()
@@ -80,7 +83,7 @@ def upload_csv(request):
 			logging.getLogger("error_logger").error("Não é possível fazer o upload do arquivo. "+repr(e))
 			messages.error(request,"Não é possível fazer o upload do arquivo. "+repr(e))
 	else:
-		return render(request, "index.html",  {'form': form, 'graficos': graficos, 'graphform':graphform})
+		return render(request, "grafico_index.html",  {'form': form, 'graficos': graficos, 'graphform':graphform})
 
 	return HttpResponseRedirect(reverse("upload_csv"))
 
