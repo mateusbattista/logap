@@ -8,4 +8,4 @@ class NumeroForm(forms.ModelForm):
 
 
 class NumeroSomadoForm(forms.Form):
-    numero_compara = forms.IntegerField()
+    numero_compara = forms.IntegerField(label='Digite um número: ')

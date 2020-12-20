@@ -8,4 +8,4 @@ class GraficoForm(forms.ModelForm):
 
 
 class SelectGraficoForm(forms.Form):
-    grafico = forms.ModelChoiceField(queryset=Grafico.objects.all())
+    grafico = forms.ModelChoiceField(queryset=Grafico.objects.all(), label='Selecione o Gráfico para plotar')
