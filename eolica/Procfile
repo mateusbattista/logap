@@ -1,1 +1,1 @@
-web: gunicorn eolica.wsgi
+web gunicorn eolica.wsgi --log-file -
