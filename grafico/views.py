@@ -45,7 +45,6 @@ def upload_csv(request):
 			if not csv_file.name.endswith('.csv'):
 				messages.error(request,'O Arquivo não é um arquivo do tipo csv')
 				return HttpResponseRedirect(reverse("upload_csv"))
-			#if file is too large, return
 			if csv_file.multiple_chunks():
 				messages.error(request,"Arquivo não pode ultrapassar (%.2f MB)." % (csv_file.size/(1000*1000),))
 				return HttpResponseRedirect(reverse("upload_csv"))
